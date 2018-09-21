@@ -5,5 +5,9 @@
     <color name="colorAccent">#BF9001</color>
 
     <color name="white">#ffffff</color>
+    <color name="aaaaaa">#aaaaaa</color>
+    <color name="bbbbbb">#bbbbbb</color>
+    <color name="cccccc">#cccccc</color>
+    <color name="dddddd">#dddddd</color>
     <color name="eeeeee">#eeeeee</color>
 </resources>

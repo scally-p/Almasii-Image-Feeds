@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Almasii Image Feeds</string>
+    <string name="image_feeds">Image Feeds</string>
+    <string name="initializing">Initializing</string>
 </resources>
