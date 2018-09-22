@@ -9,47 +9,39 @@ import android.graphics.Typeface
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.IdRes
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import android.support.constraint.ConstraintLayout
 import android.view.View
 import android.widget.TextView
+import io.capsella.almasii.imagefeeds.util.HelperFunctions
+import com.agrawalsuneet.dotsloader.loaders.LazyLoader
 import io.capsella.almasii.imagefeeds.R
-import io.capsella.almasii.imagefeeds.adapter.ImageAdapter
 import io.capsella.almasii.imagefeeds.dao.ImageDao
-import io.capsella.almasii.imagefeeds.model.Image
 import io.capsella.almasii.imagefeeds.util.Constants
 
 
-class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
+class SplashActivity : AppCompatActivity() {
 
-    private val TAG = MainActivity::class.java.simpleName
+    private val TAG = SplashActivity::class.java.simpleName
 
+    private lateinit var rootLayout: ConstraintLayout
     private lateinit var titleTxt: TextView
-    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var statusTxt: TextView
+    private lateinit var lazyLoader: LazyLoader
 
-    private lateinit var proximaNovaBold: Typeface
-    private lateinit var proximaNovaSemiBold: Typeface
     private lateinit var proximaNovaRegular: Typeface
 
     private lateinit var dataFetchCompletedBroadcastReceiver: DataFetchCompletedBroadcastReceiver
-    private var images: MutableList<Image>? = null
-    private lateinit var imageAdapter: ImageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_splash)
 
-        proximaNovaBold = Typeface.createFromAsset(assets, "Proxima Nova Bold.ttf")
-        proximaNovaSemiBold = Typeface.createFromAsset(assets, "Proxima Nova SemiBold.ttf")
         proximaNovaRegular = Typeface.createFromAsset(assets, "Proxima Nova Regular.ttf")
 
         dataFetchCompletedBroadcastReceiver = DataFetchCompletedBroadcastReceiver()
-        images = ArrayList()
 
         initViews()
-        displayImages()
+        ImageDao(this).fetchData()
     }
 
     private fun <T : View> Activity.bind(@IdRes res: Int): T {
@@ -67,35 +59,34 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         unregisterReceiver(dataFetchCompletedBroadcastReceiver)
     }
 
-    override fun onRefresh() {
-        ImageDao(this).fetchData()
-    }
-
     private fun initViews() {
+        rootLayout = bind(R.id.root_layout)
         titleTxt = bind(R.id.title)
-        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout)
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary)
-        recyclerView = bind(R.id.recycler_view)
+        statusTxt = bind(R.id.status)
+        lazyLoader = bind(R.id.loader)
 
-        titleTxt.typeface = proximaNovaBold
-    }
+        titleTxt.typeface = proximaNovaRegular
+        statusTxt.typeface = proximaNovaRegular
 
-    private fun displayImages() {
-
-        images = ImageDao(this).getImages()
-
-        if (images != null) {
-            imageAdapter = ImageAdapter(this, images)
-            recyclerView.layoutManager = LinearLayoutManager(this)
-            recyclerView.adapter = imageAdapter
+        if (ImageDao(this).getImagesCount() > 0) {
+            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            HelperFunctions.circularConcealView(1, 500, rootLayout, this@SplashActivity as AppCompatActivity, null)
+        } else {
+            if (HelperFunctions.isConnectedToInternet(this)) {
+                lazyLoader.visibility = View.VISIBLE
+                statusTxt.text = resources.getString(R.string.initializing)
+            } else {
+                lazyLoader.visibility = View.GONE
+                statusTxt.text = resources.getString(R.string.no_internet_connection)
+            }
         }
     }
 
     inner class DataFetchCompletedBroadcastReceiver : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
-            displayImages()
-            swipeRefreshLayout.isRefreshing = false
+            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            HelperFunctions.circularConcealView(1, 500, rootLayout, this@SplashActivity as AppCompatActivity, null)
         }
     }
 }

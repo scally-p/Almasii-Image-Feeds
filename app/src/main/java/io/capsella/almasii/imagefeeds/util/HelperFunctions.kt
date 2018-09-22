@@ -4,6 +4,8 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.app.Dialog
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
 import android.util.Log
@@ -18,6 +20,14 @@ class HelperFunctions{
     companion object {
 
         private val TAG = HelperFunctions::class.java.simpleName
+
+        fun isConnectedToInternet(context: Context): Boolean {
+
+            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+
+            return activeNetwork?.isConnectedOrConnecting == true
+        }
 
         fun getDateTimeInMilliSeconds(date: String): Long {
 
@@ -51,12 +61,9 @@ class HelperFunctions{
             return formatter.format(calendar.time)
         }
 
-        fun getFormattedDateWithDayAndTimeString(date: String?, withDay: Boolean, withTime: Boolean, defaultTxt: String): String {
+        fun getFormattedDateWithDayAndTimeString(date: String?, withDay: Boolean, withTime: Boolean): String {
 
             Log.d(TAG, "Date provided: $date")
-
-            if (date.isNullOrEmpty() || date == "null")
-                return defaultTxt
 
             val calendar = Calendar.getInstance()
             val formatter: SimpleDateFormat
@@ -223,7 +230,6 @@ class HelperFunctions{
                     super.onAnimationEnd(animation)
 
                     if (appCompatActivity != null) {
-                        dialog!!.dismiss()
                         appCompatActivity.finish()
                         view.visibility = View.GONE
                     } else if (dialog != null) {
