@@ -12,6 +12,7 @@ import android.support.annotation.IdRes
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import io.capsella.almasii.imagefeeds.R
@@ -21,7 +22,7 @@ import io.capsella.almasii.imagefeeds.model.Image
 import io.capsella.almasii.imagefeeds.util.Constants
 
 
-class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
+class MainActivity : AppCompatActivity() {
 
     private val TAG = MainActivity::class.java.simpleName
 
@@ -67,10 +68,6 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         unregisterReceiver(dataFetchCompletedBroadcastReceiver)
     }
 
-    override fun onRefresh() {
-        ImageDao(this).fetchData()
-    }
-
     private fun initViews() {
         titleTxt = bind(R.id.title)
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout)
@@ -78,6 +75,11 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         recyclerView = bind(R.id.recycler_view)
 
         titleTxt.typeface = proximaNovaBold
+
+        swipeRefreshLayout.setOnRefreshListener {
+            Log.d(TAG, "===============REFRESH STARTED===============")
+            ImageDao(this).fetchData()
+        }
     }
 
     private fun displayImages() {

@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.graphics.Typeface
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.support.annotation.IdRes
 import android.support.constraint.ConstraintLayout
 import android.view.View
@@ -69,8 +70,11 @@ class SplashActivity : AppCompatActivity() {
         statusTxt.typeface = proximaNovaRegular
 
         if (ImageDao(this).getImagesCount() > 0) {
-            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-            HelperFunctions.circularConcealView(1, 500, rootLayout, this@SplashActivity as AppCompatActivity, null)
+            Handler().postDelayed({
+                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                finish()
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }, 1000)
         } else {
             if (HelperFunctions.isConnectedToInternet(this)) {
                 lazyLoader.visibility = View.VISIBLE
@@ -86,7 +90,8 @@ class SplashActivity : AppCompatActivity() {
 
         override fun onReceive(context: Context, intent: Intent) {
             startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-            HelperFunctions.circularConcealView(1, 500, rootLayout, this@SplashActivity as AppCompatActivity, null)
+            finish()
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 }

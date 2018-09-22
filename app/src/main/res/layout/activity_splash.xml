@@ -1,72 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<io.codetail.widget.RevealFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/root_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white">
+    <ImageView
+        android:id="@+id/app_logo"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/app_logo"
+        app:layout_constraintBottom_toTopOf="@+id/title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
-        <ImageView
-            android:id="@+id/app_logo"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/app_logo"
-            app:layout_constraintBottom_toTopOf="@+id/title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/image_feeds"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_logo" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="?attr/actionBarSize"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             android:gravity="center"
-            android:text="@string/image_feeds"
-            android:textColor="@color/colorAccent"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/app_logo" />
+            android:text="@string/initializing"
+            android:textColor="@color/aaaaaa"
+            android:textSize="16sp" />
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <com.agrawalsuneet.dotsloader.loaders.LazyLoader
+            android:id="@+id/loader"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="?attr/actionBarSize"
-            android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <TextView
-                android:id="@+id/status"
-                android:layout_width="wrap_content"
-                android:layout_height="?attr/actionBarSize"
-                android:gravity="center"
-                android:text="@string/initializing"
-                android:textColor="@color/aaaaaa"
-                android:textSize="16sp" />
-
-            <com.agrawalsuneet.dotsloader.loaders.LazyLoader
-                android:id="@+id/loader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:lazyloader_animDur="300"
-                android:layout_marginStart="10dp"
-                app:lazyloader_dotsDist="5dp"
-                app:lazyloader_dotsRadius="3dp"
-                app:lazyloader_firstDelayDur="100"
-                app:lazyloader_firstDotColor="@color/cccccc"
-                app:lazyloader_interpolator="@android:anim/decelerate_interpolator"
-                app:lazyloader_secondDelayDur="200"
-                app:lazyloader_secondDotColor="@color/cccccc"
-                app:lazyloader_thirdDotColor="@color/cccccc" />
-        </LinearLayout>
-    </android.support.constraint.ConstraintLayout>
-</io.codetail.widget.RevealFrameLayout>
+            android:layout_marginStart="10dp"
+            app:lazyloader_animDur="300"
+            app:lazyloader_dotsDist="5dp"
+            app:lazyloader_dotsRadius="3dp"
+            app:lazyloader_firstDelayDur="100"
+            app:lazyloader_firstDotColor="@color/cccccc"
+            app:lazyloader_interpolator="@android:anim/decelerate_interpolator"
+            app:lazyloader_secondDelayDur="200"
+            app:lazyloader_secondDotColor="@color/cccccc"
+            app:lazyloader_thirdDotColor="@color/cccccc" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

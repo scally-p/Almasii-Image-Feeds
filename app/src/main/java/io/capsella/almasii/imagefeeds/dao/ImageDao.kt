@@ -3,16 +3,13 @@ package io.capsella.almasii.imagefeeds.dao
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.android.volley.AuthFailureError
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import io.capsella.almasii.imagefeeds.database.Database
 import io.capsella.almasii.imagefeeds.model.Image
 import io.capsella.almasii.imagefeeds.util.Constants
-import org.json.JSONArray
 
 class ImageDao {
 
@@ -29,14 +26,15 @@ class ImageDao {
 
         Log.d(TAG, "Url - All Photos: ${Constants.URL_ALL_PHOTOS}")
 
-        val request = object : StringRequest(Request.Method.GET, Constants.URL_ALL_PHOTOS,
+        val request = JsonArrayRequest(Request.Method.GET, Constants.URL_ALL_PHOTOS, null,
                 Response.Listener { response ->
 
                     try {
                         Log.d(TAG, "All Photos JSON \n----------$response")
 
-                        database!!.clear()
-                        database!!.saveImages(JSONArray(response))
+                        database!!.open().clear()
+                        database!!.saveImages(response)
+                        database!!.close()
 
                         context.sendBroadcast(Intent(Constants.Broadcast_DATA_FETCH_COMPLETED))
 
@@ -46,34 +44,8 @@ class ImageDao {
                 },
                 Response.ErrorListener { error ->
                     error.printStackTrace()
-                }) {
-            @Throws(AuthFailureError::class)
-            override fun getHeaders(): Map<String, String> {
-                val headers = HashMap<String, String>()
-                headers["Content-Type"] = "application/json"
-                return headers
-            }
-        }
-
-//        val request = JsonArrayRequest(Request.Method.GET, Constants.URL_ALL_PHOTOS, null,
-//                Response.Listener { response ->
-//
-//                    try {
-//                        Log.d(TAG, "All Photos JSON \n----------$response")
-//
-//                        database!!.clear()
-//                        database!!.saveImages(response)
-//
-//                        context.sendBroadcast(Intent(Constants.Broadcast_DATA_FETCH_COMPLETED))
-//
-//                    } catch (e: Exception) {
-//                        e.printStackTrace()
-//                    }
-//                },
-//                Response.ErrorListener { error ->
-//                    error.printStackTrace()
-//                }
-//        )
+                }
+        )
 
         Volley.newRequestQueue(context).add(request)
     }

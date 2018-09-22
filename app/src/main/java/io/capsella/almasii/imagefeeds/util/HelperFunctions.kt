@@ -1,17 +1,11 @@
 package io.capsella.almasii.imagefeeds.util
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.app.Dialog
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
-import io.codetail.animation.ViewAnimationUtils
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -129,119 +123,6 @@ class HelperFunctions{
         fun dpToPx(context: Context, dp: Int): Int {
             val displayMetrics = context.resources.displayMetrics
             return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
-        }
-
-        fun circularRevealView(type: Int, duration: Int, view: View) {
-
-            var cx = 0
-            var cy = 0
-            var finalRadius = 0f
-
-            when (type) {
-
-                1 -> {
-                    //CENTER
-                    cx = view.width / 2
-                    cy = view.height / 2
-                    finalRadius = Math.max(view.width, view.height).toFloat()
-                }
-                2 -> {
-                    //TOP_LEFT
-                    cx = view.left
-                    cy = view.top
-                    finalRadius = Math.hypot(view.width.toDouble(), view.height.toDouble()).toInt().toFloat()
-                }
-                3 -> {
-                    //TOP_RIGHT
-                    cx = view.right
-                    cy = view.top
-                    finalRadius = Math.hypot(view.width.toDouble(), view.height.toDouble()).toInt().toFloat()
-                }
-                4 -> {
-                    //BOTTOM_LEFT
-                    cx = view.left
-                    cy = view.bottom
-                    finalRadius = Math.hypot(view.width.toDouble(), view.height.toDouble()).toInt().toFloat()
-                }
-                5 -> {
-                    //BOTTOM_RIGHT
-                    cx = view.right
-                    cy = view.bottom
-                    finalRadius = Math.hypot(view.width.toDouble(), view.height.toDouble()).toInt().toFloat()
-                }
-            }
-
-            val animator = ViewAnimationUtils.createCircularReveal(view, cx, cy, 0f, finalRadius)
-            animator.interpolator = AccelerateDecelerateInterpolator()
-            animator.duration = duration.toLong()
-            view.visibility = View.VISIBLE
-
-            animator.addListener(object : AnimatorListenerAdapter() {
-            })
-            animator.start()
-        }
-
-        fun circularConcealView(type: Int, duration: Int, view: View, appCompatActivity: AppCompatActivity?, dialog: Dialog?) {
-
-            var cx = 0
-            var cy = 0
-            var initialRadius = 0f
-
-            when (type) {
-
-                1 -> {
-                    //CENTER
-                    cx = view.width / 2
-                    cy = view.height / 2
-                    initialRadius = Math.max(view.width, view.height).toFloat()
-                }
-                2 -> {
-                    //TOP_LEFT
-                    cx = view.left
-                    cy = view.top
-                    initialRadius = Math.hypot(view.width.toDouble(), view.height.toDouble()).toInt().toFloat()
-                }
-                3 -> {
-                    //TOP_RIGHT
-                    cx = view.right
-                    cy = view.top
-                    initialRadius = Math.hypot(view.width.toDouble(), view.height.toDouble()).toInt().toFloat()
-                }
-                4 -> {
-                    //BOTTOM_LEFT
-                    cx = view.left
-                    cy = view.bottom
-                    initialRadius = Math.hypot(view.width.toDouble(), view.height.toDouble()).toInt().toFloat()
-                }
-                5 -> {
-                    //BOTTOM_RIGHT
-                    cx = view.right
-                    cy = view.bottom
-                    initialRadius = Math.hypot(view.width.toDouble(), view.height.toDouble()).toInt().toFloat()
-                }
-            }
-
-            val animator = ViewAnimationUtils.createCircularReveal(view, cx, cy, initialRadius, 0f)
-            animator.interpolator = AccelerateDecelerateInterpolator()
-            animator.duration = duration.toLong()
-
-            animator.addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    super.onAnimationEnd(animation)
-
-                    if (appCompatActivity != null) {
-                        appCompatActivity.finish()
-                        view.visibility = View.GONE
-                    } else if (dialog != null) {
-                        dialog.dismiss()
-                        view.visibility = View.GONE
-                    } else {
-                        view.visibility = View.INVISIBLE
-                    }
-                }
-            })
-
-            animator.start()
         }
     }
 }
