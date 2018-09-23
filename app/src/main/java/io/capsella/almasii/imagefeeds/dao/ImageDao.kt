@@ -67,6 +67,7 @@ class ImageDao {
                         cursor.getInt(cursor.getColumnIndex(Database.COLUMN_CREATED_AT_MILLIS)))
 
                 images.add(image)
+                Log.d(TAG, "\nCreated At Millis: ${image.createdAtMillis}")
             }
             Log.d(TAG, "Images Count: ${images.size}")
 
