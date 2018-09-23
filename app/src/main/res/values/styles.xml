@@ -31,4 +31,12 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.7</item>
     </style>
+
+    <style name="AppTheme.GreyAccent">
+        <item name="colorAccent">@color/cccccc</item>
+    </style>
+
+    <style name="AppTheme.WhiteAccent">
+        <item name="colorAccent">@color/white</item>
+    </style>
 </resources>

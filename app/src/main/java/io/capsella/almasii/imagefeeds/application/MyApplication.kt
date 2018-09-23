@@ -6,9 +6,11 @@ import android.util.Log
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 
+
 class MyApplication : Application() {
 
     private val TAG = MyApplication::class.java.simpleName
+
     init {
         instance = this
     }
@@ -16,7 +18,7 @@ class MyApplication : Application() {
     companion object {
         private var instance: Application? = null
 
-        fun applicationContext() : Context {
+        fun applicationContext(): Context {
             return instance!!.applicationContext
         }
     }
@@ -30,4 +32,3 @@ class MyApplication : Application() {
                 .into(imageView)
     }
 }
-
