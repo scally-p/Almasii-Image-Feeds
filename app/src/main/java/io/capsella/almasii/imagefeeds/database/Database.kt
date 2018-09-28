@@ -125,10 +125,10 @@ class Database {
             values.put(COLUMN_URL, jsonObject.getString(COLUMN_URL))
             values.put(COLUMN_DOWNLOAD_TOKEN, jsonObject.getString(COLUMN_DOWNLOAD_TOKEN))
             values.put(COLUMN_NAME, jsonObject.getString(COLUMN_NAME))
-            values.put(COLUMN_CREATED_AT_MILLIS, jsonObject.getInt(COLUMN_CREATED_AT_MILLIS))
+            values.put(COLUMN_CREATED_AT_MILLIS, jsonObject.getLong(COLUMN_CREATED_AT_MILLIS))
 
             val id = sqliteDatabase!!.insertOrThrow(TABLE_IMAGES, null, values)
-            Log.d(TAG, "Image (${jsonObject.getString(COLUMN_NAME)}) saved.")
+            Log.d(TAG, "Image (${jsonObject.getString(COLUMN_NAME)}) with Created At - ${jsonObject.getInt(COLUMN_CREATED_AT_MILLIS)} saved.")
 
             true
         } catch (e: Exception) {

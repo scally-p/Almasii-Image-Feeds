@@ -1,6 +1,6 @@
 package io.capsella.almasii.imagefeeds.model
 
-class Image(id: Int, url: String, downloadToken: String, name: String, createdAtMillis: Int) {
+class Image(id: Int, url: String, downloadToken: String, name: String, createdAtMillis: Long) {
 
     var id: Int = id
 
@@ -10,5 +10,5 @@ class Image(id: Int, url: String, downloadToken: String, name: String, createdAt
 
     var name: String = name
 
-    var createdAtMillis: Int = createdAtMillis
+    var createdAtMillis: Long = createdAtMillis
 }

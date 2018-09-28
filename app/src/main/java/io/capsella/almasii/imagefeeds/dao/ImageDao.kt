@@ -64,7 +64,7 @@ class ImageDao {
                         cursor.getString(cursor.getColumnIndex(Database.COLUMN_URL)),
                         cursor.getString(cursor.getColumnIndex(Database.COLUMN_DOWNLOAD_TOKEN)),
                         cursor.getString(cursor.getColumnIndex(Database.COLUMN_NAME)),
-                        cursor.getInt(cursor.getColumnIndex(Database.COLUMN_CREATED_AT_MILLIS)))
+                        cursor.getLong(cursor.getColumnIndex(Database.COLUMN_CREATED_AT_MILLIS)))
 
                 images.add(image)
                 Log.d(TAG, "\nCreated At Millis: ${image.createdAtMillis}")

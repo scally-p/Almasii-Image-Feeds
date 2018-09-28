@@ -31,34 +31,25 @@ class HelperFunctions{
 
         fun getDateTimeInMilliSeconds(date: String): Long {
 
-            val calendar = Calendar.getInstance()
-            val parts = date.trim().split(" ").toTypedArray()
-
-            val day = parts[0].split("-")[2]
-            val mon = parts[0].split("-")[1]
-            val yr = parts[0].split("-")[0]
-            val hour = parts[1].split(":")[0]
-            val minute = parts[1].split(":")[1]
-            val second = parts[1].split(":")[2]
-
-            calendar.set(Integer.parseInt(yr),
-                    Integer.parseInt(mon) - 1,
-                    Integer.parseInt(day),
-                    Integer.parseInt(hour),
-                    Integer.parseInt(minute),
-                    Integer.parseInt(second))
-
-            return calendar.timeInMillis
+            val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            return try {
+                val mDate = formatter.parse(date)
+                val timeInMilliseconds = mDate.time
+                Log.d(TAG, "Date Time Stamp In Milli Seconds: ${timeInMilliseconds}")
+                timeInMilliseconds
+            } catch (e: Exception) {
+                e.printStackTrace()
+                0
+            }
         }
 
         fun getDateFromMilliSeconds(milliSeconds: Long): String {
 
             val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = milliSeconds
-
-            return formatter.format(calendar.time)
+            val date = Date()
+            date.time = milliSeconds
+            return formatter.format(date)
         }
 
         fun getFormattedDateWithDayAndTimeString(date: String?, withDay: Boolean, withTime: Boolean): String {
